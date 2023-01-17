@@ -39,11 +39,18 @@
         
         <hr />
 
+        <!--Toggle the div with class box on and off: 18 minute mark-->
+        <button class="method-1" @click="isVisible = !isVisible">Toggle Box</button>
         <div v-if="isVisible" class="box"></div>
-        <div v-else-if="isVisible2" class="box-1"></div>
-        <div v-else class="box-2"></div>
 
-        </div>
+        <hr/>
+
+        <!--Toggle box method: 20 minute mark-->
+        <button @click="toggleBox" class="example-2">Method Example Toggle</button>
+        <div v-if="blueBox" class="box-1"></div>
+
+        <!--Event listener for user keyboard input: 25 min-->
+        <input @keyup.enter="greet" v-model="keyup" type="text" class="key-up">
     </div>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -55,12 +62,23 @@
                 return {
                     greeting: 'Hello Vue!',
                     score: '101-88', 
-                    isVisible: true, 
-                    isVisible2: false 
+                    isVisible: false,
+                    blueBox:false, 
+                    keyup:"" 
                 }
-            }   
+            }, 
+            methods: {
+                toggleBox(){
+                    this.blueBox = !this.blueBox
+                }, 
+                greet(){
+                    console.log(this.keyup)
+                }
+            }  
         })
         app.mount('#app') 
     </script>
+
+
 </body>
 </html>
