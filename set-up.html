@@ -23,18 +23,31 @@
             width: 300px;
         }
 
-        [v-cloak]{
-            display: none;
+        .login{
+            margin-top: 25px;
+        }
+
+        .email{
+            height: 30px;
+            width: 50px; 
+            padding: 5px; 
+        }
+
+        .pw{
+            height: 30px;
+            width: 50px; 
+            padding: 5px; 
         }
     </style>
 </head>
 <body>
 
     <div id="app" v-cloak>  <!--attach vue method with id=app-->
-        <h1>
-            {{greeting}}
-        </h1>
-        <p1>Final score: {{score}}</p1>
+      
+        <form>
+            
+        </form>
+
         <input v-model="greeting"></input>
         
         <hr />
@@ -51,7 +64,12 @@
 
         <!--Event listener for user keyboard input: 25 min-->
         <input @keyup.enter="greet" v-model="keyup" type="text" class="key-up">
+
+        <hr>
+        
     </div>
+
+    
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
@@ -60,8 +78,7 @@
         let app=Vue.createApp({
             data: function () {
                 return {
-                    greeting: 'Hello Vue!',
-                    score: '101-88', 
+                    greeting: 'Hello Vue!', 
                     isVisible: false,
                     blueBox:false, 
                     keyup:"" 
@@ -76,6 +93,7 @@
                 }
             }  
         })
+     
         app.mount('#app') 
     </script>
 

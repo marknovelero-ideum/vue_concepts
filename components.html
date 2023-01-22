@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .redbox{
+            height: 30px;
+            width: 30px; 
+            background-color: red;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .button-toggle{
+            width: 100px;
+            height: 40px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        input{
+            width: 300px;
+            height: 30px;
+            font-size: 11pt;
+            margin-right: 20px;
+            background-color: bisque;
+        }
+      
+
+    </style>
+</head>
+<body>
+    
+    <div id="app">
+       
+
+        <button @click="toggle" class="button-toggle">{{buttonLabel}} </button>
+        <div v-if="isRedBoxVisible" class="redbox"></div>
+
+        <hr>
+
+        <!--login-form is a component and defined by app.component below.-->
+        <login-form/>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        let app=Vue.createApp({
+            data: function(){
+                return {
+                    buttonLabel: "Click to toggle box", 
+                    isRedBoxVisible: false
+                }
+            }, 
+            methods: {
+                toggle(){
+                    this.isRedBoxVisible = !this.isRedBoxVisible
+                }
+            }
+        })
+
+        app.component('login-form', {
+            template:`
+                <form @submit.prevent="handleSubmit">
+                    <h1>{{title}}</h1>
+                    <input type="email" v-model="email"/>
+                    <input type="password" v-model="password"/>
+                    <button>Submit</button>
+                </form>
+            `, 
+            data(){
+                return{
+                    title: "Login Form", 
+                    email: '', 
+                    password:''
+                }
+            }, 
+            methods: {
+                handleSubmit(){
+                    console.log(this.email, this.password)
+                }
+            }
+        })
+        app.mount("#app")
+    </script>
+</body>
+</html>
