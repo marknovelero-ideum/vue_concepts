@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+            height:50px; 
+            width: 1000px;
+            margin-bottom: 20px;
+        }
+        .togglebox{
+            height: 200px;
+            width: 200px;
+            background-color: aqua;
+            margin-bottom: 100px;
+        }
+        h1{
+            margin: 30px;
+            font-size: 22pt;
+        }
+        .test-form{
+            height: 30px; 
+            width: 300px; 
+            margin-right: 30px;
+            margin-bottom: 20px;
+            outline: solid 1px black;
+        }
+        label{
+            margin-left: 20px;
+            margin-right: 25px;
+            font-size: 16pt;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+<!--Covers For Loops min 57-->    
+    <div id="app">
+        <p>{{stateData}}</p>
+        <button @click="toggleFunction"> {{ label }} </button>
+        <div v-if="isVisible" class="togglebox"></div>        
+        <test-form />
+    </div>
+    
+
+
+    <!--import vue-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!--set up data & methods. Mount application to div with id=app-->
+    <script>
+        let app=Vue.createApp({
+            data: function(){
+                return{
+                    stateData: "state data goes here.", 
+                    label: "Wide Button", 
+                    isVisible: true
+                }
+            }, 
+            methods: {
+                toggleFunction(){
+                    this.isVisible= !this.isVisible
+                }
+            }
+        })
+
+        //Parent Component
+        app.component('test-form', {
+            
+        // See Line 82-89 for for-in loop syntax. It's grabbing data from 'inputs' in line 100-111.  
+        // Line 100-111, for every object in 'inputs', a 'child-input' component is being created. i in line 83 is the index and is used as the key. 
+
+
+
+            template:`
+                <form @submit.prevent="handleSubmit">
+                    <h1>{{formTitle}}</h1>
+                    <child-input 
+                        v-for="(input, i) in inputs"
+                        :key="i"
+                        v-model="input.value"
+                        :label="input.label"
+                        :type="input.type"
+                    />
+                    <div>
+                    <button>Submit</button>
+                    </div>
+                </form>     
+            `, 
+            components: ['child-input'], 
+            data: function(){
+                return {
+                    email: '', 
+                    password: '',
+                    formTitle: 'Form', 
+                    inputs: [
+                        {
+                            label: 'Email', 
+                            value: '', 
+                            type: 'email' 
+                        }, 
+                        {
+                            label: 'Password', 
+                            value: '', 
+                            type: 'password' 
+                        },  
+                    ],
+                    emailLabel: "Email", 
+                    passwordLabel: "Password"
+                }
+            }, 
+            methods: {
+                handleSubmit(){
+                    console.log(this.inputs[0].value, this.inputs[1].value)
+                }
+            }
+        })
+
+        app.component("child-input", {
+            template: `
+                <label>{{label}}
+                    <input :type="type" class='test-form' v-model="userInput">
+                </label>
+            `,
+            props: ['label', 'modelValue', 'type'],
+            computed:{
+                userInput: {
+                    get(){
+                        return this.modelValue                              // here you are grabbing the model value from the parent component
+                    },
+                    set(value){
+                        this.$emit('update:modelValue', value)             // v-model in line 72 & 73 are listening to modelValue. When this.$emit signals a change, the v-model will update in 72&73 
+                    }
+                }
+            },
+           // data: function(){
+             //   return {
+               //     userInput:''
+               // }
+            //}, 
+            
+        })
+        app.mount('#app') 
+    </script>
+</body>
+</html>
